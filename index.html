@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Bar Chart Multi Axis</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
+    <script src="data.js"></script>
+	<style>
+	canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	</style>
+</head>
+
+<body>
+    <script>
+    var needleCount = rawData[0].length;
+    var needles = [];
+    for (var i = 0; i < needleCount; i++) {
+        var needle = {
+            label: rawData[0][i],
+            data: []
+        };
+        for (var x = 1; x < 14; x++) {
+            needle.data.push(Number(rawData[x][i]));
+        }
+
+        needles.push(needle);
+    }
+
+    var nextFreeColor = 0;
+    var fillingColors = [
+    window.chartColors.green,
+    window.chartColors.orange,
+    window.chartColors.yellow,
+    window.chartColors.purple
+    ];
+
+    var currentNeedleIndex = -1;
+    window.needleSelection = []; 
+    function load_next_needle(direction){
+        currentNeedleIndex+=direction;
+        nextFreeColor = 0;
+         
+        window.needleSelection.splice(0,window.needleSelection.length);
+        var needle_A = needles[2];
+        var needle_B = needles[currentNeedleIndex];
+        var needle_C = needles[9];
+
+        needle_A.backgroundColor = window.chartColors.blue;
+        needle_B.backgroundColor = window.chartColors.red;
+        needle_C.backgroundColor = window.chartColors.green;
+
+        window.needleSelection.push(needle_A);
+        window.needleSelection.push(needle_C);
+        window.needleSelection.push(needle_B);
+
+        
+
+
+
+        window.myBar.update();
+    }
+
+    </script>
+
+
+	<div style="width: 75%">
+		<canvas id="canvas"></canvas>
+    </div>
+    <button id="prevNeedle">prev needle</button>
+	<button id="nextNeedle">next needle</button>
+	<script>
+		var barChartData = {
+            labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'],
+            datasets: window.needleSelection
+        };
+        
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myBar = new Chart(ctx, {
+				type: 'bar',
+				data: barChartData,
+				options: {
+					responsive: true,
+					title: {
+						display: true,
+						text: 'Chart.js Bar Chart - Multi Axis'
+					},
+					tooltips: {
+						mode: 'index',
+						intersect: true
+					}
+				}
+            });
+            
+            load_next_needle(1); // init
+		};
+
+        document.getElementById('nextNeedle').addEventListener('click', function(){ load_next_needle(1) });
+        document.getElementById('prevNeedle').addEventListener('click', function(){ load_next_needle(-1) });
+	</script>
+</body>
+
+</html>

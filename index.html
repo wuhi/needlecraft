@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Bar Chart Multi Axis</title>
+	<title>Needlecraft</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
     <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
     <script src="data.js"></script>
@@ -58,21 +58,22 @@
         window.needleSelection.push(needle_C);
         window.needleSelection.push(needle_B);
 
-        
-
-
-
         window.myBar.update();
+
+        drawNeedleSelect();
     }
 
     </script>
 
-
+    alles wird gut :-) ...irgendwann...
 	<div style="width: 75%">
 		<canvas id="canvas"></canvas>
     </div>
     <button id="prevNeedle">prev needle</button>
-	<button id="nextNeedle">next needle</button>
+    <button id="nextNeedle">next needle</button>
+    
+    direct selection
+    <select id="allNeedlesSelect"></select>
 	<script>
 		var barChartData = {
             labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'],
@@ -96,12 +97,32 @@
 					}
 				}
             });
-            
+
             load_next_needle(1); // init
-		};
+        };
+        
+        function drawNeedleSelect(){
+            allNeedlesSelect.innerHTML = "";
+
+            for(var i = 0; i < needles.length; i++){
+                var option = document.createElement("option");
+                option.value = i;
+                option.innerHTML = needles[i].label;
+
+                if(i == currentNeedleIndex){
+                    option.selected = "selected"; 
+                }
+
+                allNeedlesSelect.appendChild(option);
+            }
+        }
 
         document.getElementById('nextNeedle').addEventListener('click', function(){ load_next_needle(1) });
         document.getElementById('prevNeedle').addEventListener('click', function(){ load_next_needle(-1) });
+        document.getElementById('allNeedlesSelect').addEventListener('change', function(){ 
+            currentNeedleIndex = allNeedlesSelect.selectedIndex;
+            load_next_needle(0);
+        });
 	</script>
 </body>
 

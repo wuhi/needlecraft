@@ -43,6 +43,13 @@
     window.needleSelection = []; 
     function load_next_needle(direction){
         currentNeedleIndex+=direction;
+
+        if(currentNeedleIndex >= needles.length){
+            currentNeedleIndex = needles.length-1;
+        }
+        if(currentNeedleIndex <= 0){
+            currentNeedleIndex = 0;
+        }
         nextFreeColor = 0;
          
         window.needleSelection.splice(0,window.needleSelection.length);
